@@ -1,0 +1,96 @@
+﻿<UserControl
+	x:Class="LongBow.RepetitiveBillingCreation.RepetitiveBillingCreationView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:sys="clr-namespace:System;assembly=mscorlib"
+	xmlns:myEnum="clr-namespace:LongBow.Common.Enumerations;assembly=LongBow.Common"
+	xmlns:repetitiveBillingCreation="clr-namespace:LongBow.RepetitiveBillingCreation"
+	mc:Ignorable="d"
+	d:DesignHeight="600"
+	d:DesignWidth="300"
+	Margin="10,10,10,10">
+	<UserControl.Resources>
+
+		<ObjectDataProvider
+			x:Key="OrientationEnum"
+			ObjectType="{x:Type sys:Enum}"
+			MethodName="GetValues">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type
+					TypeName="myEnum:Orientation" />
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+
+		<ObjectDataProvider
+			x:Key="FrequenceModeEnum"
+			ObjectType="{x:Type sys:Enum}"
+			MethodName="GetValues">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type
+					TypeName="myEnum:FrequenceMode" />
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+
+	</UserControl.Resources>
+
+	<Grid>
+		<StackPanel>
+
+			<TextBlock>Prochaine date de valeur</TextBlock>
+			<DatePicker
+				SelectedDate="{Binding ValuationDate}" />
+
+			<TextBlock
+				Margin="0,15,0,0">Libellé</TextBlock>
+			<TextBox
+				Text="{Binding Title,
+				Mode=TwoWay,
+				UpdateSourceTrigger=PropertyChanged,
+				ValidatesOnNotifyDataErrors=True,
+				NotifyOnValidationError=True}" />
+
+			<TextBlock
+				Margin="0,15,0,0">Montant</TextBlock>
+			<TextBox
+				Text="{Binding Amount,
+				Mode=TwoWay,
+				UpdateSourceTrigger=PropertyChanged,
+				ValidatesOnNotifyDataErrors=True,
+				NotifyOnValidationError=True}" />
+
+			<TextBlock
+				Margin="0,15,0,0">Sens</TextBlock>
+			<ComboBox
+				ItemsSource="{Binding Source={StaticResource OrientationEnum}}"
+				SelectedItem="{Binding Orientation}"
+				ItemTemplate="{StaticResource EnumComboBoxDataTemplate}" />
+			
+			<TextBlock
+				Margin="0,15,0,0">Fréquence</TextBlock>
+			<ComboBox
+				ItemsSource="{Binding Source={StaticResource FrequenceModeEnum}}"
+				SelectedItem="{Binding FrequenceMode}"
+				ItemTemplate="{StaticResource EnumComboBoxDataTemplate}" />
+
+			<StackPanel
+				Margin="0,15,0,0"
+				FlowDirection="RightToLeft"
+				Orientation="Horizontal">
+				<Button
+					Content="Confirmer"
+					Width="120"
+					Command="{Binding ValidateCommand}" />
+			</StackPanel>
+
+		</StackPanel>
+	</Grid>
+
+	<UserControl.InputBindings>
+		<KeyBinding
+			Key="Enter"
+			Command="{Binding ValidateCommand}" />
+	</UserControl.InputBindings>
+
+</UserControl>

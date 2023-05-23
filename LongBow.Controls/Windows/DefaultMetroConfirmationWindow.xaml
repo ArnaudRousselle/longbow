@@ -1,0 +1,48 @@
+﻿<mahappsControl:MetroWindow
+	x:Class="LongBow.Controls.Windows.DefaultMetroConfirmationWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mahappsControl="http://metro.mahapps.com/winfx/xaml/controls"
+	mc:Ignorable="d"
+	d:DesignHeight="300"
+	d:DesignWidth="300"
+	Style="{StaticResource MyMetroWindowStyle}">
+	<Grid
+		x:Name="LayoutRoot"
+		Margin="5">
+		<Grid.RowDefinitions>
+			<RowDefinition />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<ContentControl
+			Margin="10"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Stretch"
+			Grid.Row="0"
+			Content="{Binding Content}" />
+		<StackPanel
+			Grid.Row="1"
+			Orientation="Horizontal"
+			HorizontalAlignment="Right">
+			<Button
+				x:Name="OkButton"
+				Content="OK"
+				Margin="2"
+				Width="80"
+				HorizontalAlignment="Right"
+				Click="OkButton_OnClick"
+				IsDefault="True" />
+			<Button
+				x:Name="CancelButton"
+				Content="Annuler"
+				Margin="2"
+				Width="80"
+				HorizontalAlignment="Right"
+				IsCancel="True"
+				Click="CancelButton_OnClick" />
+		</StackPanel>
+	</Grid>
+</mahappsControl:MetroWindow>

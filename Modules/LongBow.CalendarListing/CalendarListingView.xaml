@@ -1,0 +1,223 @@
+﻿<UserControl
+	x:Class="LongBow.CalendarListing.CalendarListingView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+	xmlns:prism="http://www.codeplex.com/prism"
+	xmlns:calendarListing="clr-namespace:LongBow.CalendarListing"
+	xmlns:controls="clr-namespace:LongBow.Controls;assembly=LongBow.Controls"
+	xmlns:windows="clr-namespace:LongBow.Controls.Windows;assembly=LongBow.Controls"
+	mc:Ignorable="d"
+	d:DesignHeight="900"
+	d:DesignWidth="900"
+	d:DataContext="{d:DesignInstance Type=calendarListing:DesignCalendarListingViewModel, IsDesignTimeCreatable=True}">
+
+	<UserControl.Resources>
+
+		<Style
+			TargetType="{x:Type ListViewItem}">
+			<Setter
+				Property="HorizontalContentAlignment"
+				Value="Stretch" />
+			<Setter
+				Property="Foreground"
+				Value="White" />
+			<Style.Triggers>
+				<DataTrigger
+					Binding="{Binding ValuationDateInCurrentMonth}"
+					Value="True">
+					<Setter
+						Property="Foreground">
+						<Setter.Value>
+							<SolidColorBrush
+								Color="#F09000"
+								Opacity="1" />
+						</Setter.Value>
+					</Setter>
+					<Setter
+						Property="FontWeight"
+						Value="Bold" />
+				</DataTrigger>
+				<Trigger
+					Property="IsSelected"
+					Value="True">
+					<Setter
+						Property="Background"
+						Value="#202020" />
+				</Trigger>
+				<Trigger
+					Property="IsMouseOver"
+					Value="True">
+					<Setter
+						Property="Background"
+						Value="#000000" />
+				</Trigger>
+			</Style.Triggers>
+		</Style>
+
+	</UserControl.Resources>
+
+	<i:Interaction.Triggers>
+		<prism:InteractionRequestTrigger
+			SourceObject="{Binding DeleteConfirmationRequest, Mode=OneWay}">
+			<windows:MetroPopupWindowAction
+				IsModal="True"
+				CenterOverAssociatedObject="True" />
+		</prism:InteractionRequestTrigger>
+	</i:Interaction.Triggers>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<ListView
+			ItemsSource="{Binding RepetitiveBillings}"
+			IsSynchronizedWithCurrentItem="True">
+
+			<ListView.View>
+				<GridView>
+					<GridViewColumn
+						Header="Prochaine date de valeur"
+						Width="140">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
+									Text="{Binding ValuationDate, StringFormat=dd/MM/yyyy}"
+									TextAlignment="Center" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn
+						Header="Libellé"
+						DisplayMemberBinding="{Binding Title}"
+						Width="220" />
+					<GridViewColumn
+						Header="Montant"
+						Width="100">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
+									TextAlignment="Right"
+									Text="{Binding Amount, StringFormat=0.00}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn
+						Header="Sens"
+						Width="80">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
+									Text="{Binding Path=Orientation, Converter={StaticResource EnumValueToStringConverter}}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn
+						Header="Fréquence"
+						Width="100">
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<TextBlock
+									Text="{Binding Path=FrequenceMode, Converter={StaticResource EnumValueToStringConverter}}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn>
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<controls:ImageButton
+									Command="{Binding DataContext.CreateBillingCommand, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+									CommandParameter="{Binding}"
+									Stretch="None"
+									Style="{StaticResource ImageShining}"
+									Source="{StaticResource InsertSource}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn>
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<controls:ImageButton
+									Command="{Binding DataContext.EditRepetitiveBillingCommand, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+									CommandParameter="{Binding}"
+									Stretch="None"
+									Style="{StaticResource ImageShining}"
+									Source="{StaticResource EditSource}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+					<GridViewColumn>
+						<GridViewColumn.CellTemplate>
+							<DataTemplate>
+								<controls:ImageButton
+									Command="{Binding DataContext.DeleteRepetitiveBillingCommand, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+									CommandParameter="{Binding}"
+									Stretch="None"
+									Style="{StaticResource ImageShining}"
+									Source="{StaticResource TrashSource}" />
+							</DataTemplate>
+						</GridViewColumn.CellTemplate>
+					</GridViewColumn>
+				</GridView>
+			</ListView.View>
+
+			<ListView.InputBindings>
+				<KeyBinding
+					Key="Enter"
+					Command="{Binding EditRepetitiveBillingCommand}"
+					CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
+
+				<KeyBinding
+					Key="Delete"
+					Command="{Binding DeleteRepetitiveBillingCommand}"
+					CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
+
+			</ListView.InputBindings>
+
+			<i:Interaction.Triggers>
+				<i:EventTrigger
+					EventName="MouseDoubleClick">
+					<prism:InvokeCommandAction
+						Command="{Binding EditRepetitiveBillingCommand}"
+						CommandParameter="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListView}}}" />
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+
+			<ListView.ContextMenu>
+				<ContextMenu>
+					<MenuItem
+						Header="Insérer"
+                        Command="{Binding CreateMultipleBillingCommand}"
+                        CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+					<MenuItem
+						Header="Modifier"
+						Command="{Binding EditRepetitiveBillingCommand}"
+						CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+					<MenuItem
+						Header="Supprimer"
+						Command="{Binding DeleteRepetitiveBillingCommand}"
+						CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}" />
+				</ContextMenu>
+			</ListView.ContextMenu>
+
+		</ListView>
+
+		<StackPanel
+			Grid.Row="1"
+			Orientation="Horizontal"
+			FlowDirection="RightToLeft">
+			<Label
+				ContentStringFormat="Montant moyen mensuel : {0:N2}€"
+				Content="{Binding AverageMonthlyBalance}">
+			</Label>
+		</StackPanel>
+
+	</Grid>
+
+</UserControl>

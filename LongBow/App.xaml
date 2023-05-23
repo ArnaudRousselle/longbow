@@ -1,0 +1,212 @@
+﻿<Application
+	x:Class="LongBow.App"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:converters="clr-namespace:LongBow.Common.Converters;assembly=LongBow.Common"
+	xmlns:mahappsControl="http://metro.mahapps.com/winfx/xaml/controls">
+	<Application.Resources>
+		<ResourceDictionary>
+
+			<!-- Images -->
+			<ImageSource
+				x:Key="AddImageSource">Resources/add.png</ImageSource>
+			<ImageSource
+				x:Key="AddSmallSource">Resources/add_small.png</ImageSource>
+			<ImageSource
+				x:Key="ArchiveImageSource">Resources/archive.png</ImageSource>
+			<ImageSource
+				x:Key="BilletSource">Resources/billet.png</ImageSource>
+			<ImageSource
+				x:Key="CalculatorSource">Resources/calculator.png</ImageSource>
+			<ImageSource
+				x:Key="CalendarSource">Resources/calendar.png</ImageSource>
+			<ImageSource
+				x:Key="ChartSource">Resources/chart.png</ImageSource>
+			<ImageSource
+				x:Key="CloseSource">Resources/close.png</ImageSource>
+			<ImageSource
+				x:Key="CloseActiveSource">Resources/closeactive.png</ImageSource>
+			<ImageSource
+				x:Key="CollapseSource">Resources/collapse.png</ImageSource>
+			<ImageSource
+				x:Key="DrawSource">Resources/draw.png</ImageSource>
+			<ImageSource
+				x:Key="EditSource">Resources/edit.png</ImageSource>
+			<ImageSource
+				x:Key="ExpandSource">Resources/expand.png</ImageSource>
+			<ImageSource
+				x:Key="ImportSource">Resources/import.png</ImageSource>
+			<ImageSource
+				x:Key="InformationSource">Resources/information.png</ImageSource>
+			<ImageSource
+				x:Key="InsertSource">Resources/insert.gif</ImageSource>
+            <ImageSource
+                x:Key="MailBoxSource">Resources/mailbox.png</ImageSource>
+            <ImageSource
+                x:Key="MergeSource">Resources/merge.png</ImageSource>
+            <ImageSource
+				x:Key="OpenSmallSource">Resources/open.gif</ImageSource>
+			<ImageSource
+				x:Key="OpenFolderSource">Resources/open_folder.png</ImageSource>
+			<ImageSource
+				x:Key="PopupSource">Resources/popup.gif</ImageSource>
+			<ImageSource
+				x:Key="RefreshSource">Resources/refresh.png</ImageSource>
+			<ImageSource
+				x:Key="SaveSource">Resources/save.png</ImageSource>
+			<ImageSource
+				x:Key="SaveAsSource">Resources/save_as.png</ImageSource>
+			<ImageSource
+				x:Key="StartMenuSource">Resources/start_menu.png</ImageSource>
+			<ImageSource
+				x:Key="TagsSource">Resources/tags.png</ImageSource>
+			<ImageSource
+				x:Key="TrashSource">Resources/trash.png</ImageSource>
+			<ImageSource
+				x:Key="WalletSource">Resources/wallet.png</ImageSource>
+
+			<!-- Converters -->
+
+			<converters:EnumValueToStringConverter
+				x:Key="EnumValueToStringConverter" />
+
+			<converters:ValidationErrorsToStringConverter
+				x:Key="ValidationErrorsToStringConverter" />
+
+
+			<!-- Colors -->
+			<SolidColorBrush
+				x:Key="PanelBackgroundBrush"
+				Color="#353535" />
+			<SolidColorBrush
+				x:Key="PanelBorderBrush"
+				Color="Black" />
+
+
+			<!-- Styles -->
+
+			<Style
+				x:Key="MyMetroWindowStyle"
+				TargetType="{x:Type mahappsControl:MetroWindow}">
+				<Setter
+					Property="BorderThickness"
+					Value="1" />
+				<Setter
+					Property="BorderBrush"
+					Value="{DynamicResource AccentColorBrush}" />
+			</Style>
+
+			<Style
+				TargetType="{x:Type Image}"
+				x:Key="ImageShining">
+				<Style.Triggers>
+					<Trigger
+						Property="IsMouseOver"
+						Value="True">
+						<Setter
+							Property="Opacity"
+							Value="0.6" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+
+			<Style
+				TargetType="{x:Type Image}"
+				x:Key="CloseButton">
+				<Setter
+					Property="Source"
+					Value="{StaticResource CloseSource}" />
+				<Style.Triggers>
+					<Trigger
+						Property="IsMouseOver"
+						Value="True">
+						<Setter
+							Property="Source"
+							Value="{StaticResource CloseActiveSource}" />
+					</Trigger>
+				</Style.Triggers>
+			</Style>
+
+			<Style
+				x:Key="ErrorBaseStyle"
+				TargetType="{x:Type Control}">
+				<Setter
+					Property="Validation.ErrorTemplate">
+					<Setter.Value>
+						<ControlTemplate>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition />
+									<RowDefinition />
+								</Grid.RowDefinitions>
+
+								<Border
+									BorderThickness="1"
+									BorderBrush="#DF0000">
+									<AdornedElementPlaceholder
+										x:Name="AdornedElementPlaceholder" />
+								</Border>
+
+								<TextBlock
+									Foreground="#DF0000"
+									Grid.Row="1"
+									FontSize="10"
+									Text="{Binding ElementName=AdornedElementPlaceholder, Path=AdornedElement.(Validation.Errors), Converter={StaticResource ValidationErrorsToStringConverter}}" />
+
+							</Grid>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</Style>
+
+			<Style
+				TargetType="{x:Type TextBox}"
+				BasedOn="{StaticResource ErrorBaseStyle}" />
+			<Style
+				TargetType="{x:Type DatePicker}"
+				BasedOn="{StaticResource ErrorBaseStyle}">
+				<Style.Setters>
+					<Setter
+						Property="Foreground"
+						Value="White" />
+					<Setter
+						Property="Background"
+						Value="#252525" />
+				</Style.Setters>
+			</Style>
+
+			<!-- DataTemplates -->
+
+			<DataTemplate
+				x:Key="EnumComboBoxDataTemplate">
+				<TextBlock>
+					<TextBlock.Text>
+						<Binding
+							Converter="{StaticResource EnumValueToStringConverter}" />
+					</TextBlock.Text>
+				</TextBlock>
+			</DataTemplate>
+
+			<ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="/Resources/Icons.xaml" />
+                <ResourceDictionary
+					Source="pack://application:,,,/LongBow.Controls;component/Themes/Generic.xaml" />
+
+				<!-- MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive! -->
+				<ResourceDictionary
+					Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+				<ResourceDictionary
+					Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+				<ResourceDictionary
+					Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+				<!-- Accent and AppTheme setting -->
+				<ResourceDictionary
+					Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+				<ResourceDictionary
+					Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+		</ResourceDictionary>
+	</Application.Resources>
+</Application>

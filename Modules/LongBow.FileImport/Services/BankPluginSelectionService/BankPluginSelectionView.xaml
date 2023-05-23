@@ -1,0 +1,55 @@
+﻿<UserControl
+	x:Class="LongBow.FileImport.Services.BankPluginSelectionService.BankPluginSelectionView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:bankPluginSelectionService="clr-namespace:LongBow.FileImport.Services.BankPluginSelectionService"
+	mc:Ignorable="d"
+	d:DesignHeight="300"
+	d:DesignWidth="300"
+	MinWidth="300"
+	Margin="10 10 10 10">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="*" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<StackPanel
+			Grid.Row="0"
+			Orientation="Vertical">
+			<ComboBox
+				ItemsSource="{Binding BankPlugins}"
+				SelectedItem="{Binding SelectedBankPlugin}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate
+						DataType="{x:Type bankPluginSelectionService:BankPluginItem}">
+						<TextBlock
+							Text="{Binding Text}" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+		</StackPanel>
+
+		<StackPanel
+			Grid.Row="1"
+			Orientation="Horizontal"
+			FlowDirection="RightToLeft"
+			Margin="0,15,0,0">
+			<Button
+				Command="{Binding CancelCommand}"
+				Content="Annuler"
+				IsCancel="True"
+				Width="100" />
+			<Button
+				Command="{Binding ValidateCommand}"
+				Content="Valider"
+				Width="100"
+				IsDefault="True"
+				Margin="10 0 0 0"/>
+		</StackPanel>
+	</Grid>
+</UserControl>
